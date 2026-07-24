@@ -7,14 +7,9 @@ import { getUser } from '../../api';
 type Props = {
   todo: Todo;
   hideModal: () => void;
-  stopLoading: () => void;
 };
 
-export const TodoModal: React.FC<Props> = ({
-  hideModal,
-  todo,
-  stopLoading,
-}) => {
+export const TodoModal: React.FC<Props> = ({ hideModal, todo }) => {
   const [user, setUser] = useState<User>({
     id: 1,
     name: 'Leanne Graham',
@@ -29,7 +24,7 @@ export const TodoModal: React.FC<Props> = ({
         setUser(response);
       })
       .finally(() => setIsUserLoading(false));
-  }, [todo.userId, stopLoading]);
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -62,8 +57,11 @@ export const TodoModal: React.FC<Props> = ({
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
-              <strong className="has-text-danger">Planned</strong>
+              {todo.completed === true ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
+              )}
 
               {' by '}
 

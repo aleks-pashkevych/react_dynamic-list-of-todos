@@ -44,10 +44,6 @@ export const App: React.FC = () => {
     setShowModal(false);
   };
 
-  const stopLoading = () => {
-    setTodosIsLoading(false);
-  };
-
   const toFiler = (val: string, status: string = 'all') => {
     const initialTodos = [...todos];
 
@@ -93,11 +89,7 @@ export const App: React.FC = () => {
         ''
       )} */}
       {showModal === true ? (
-        <TodoModal
-          hideModal={hideTheModal}
-          todo={todoItem}
-          stopLoading={stopLoading}
-        />
+        <TodoModal hideModal={hideTheModal} todo={todoItem} />
       ) : (
         ''
       )}

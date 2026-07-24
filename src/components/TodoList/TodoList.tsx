@@ -27,10 +27,21 @@ export const TodoList: React.FC<Props> = ({ showModal, todos }) => (
           <tr data-cy="todo" className="" key={todo.id}>
             <td className="is-vcentered">{todo.id}</td>
             <td
-              className={`is-vcentered ${todo.completed === true ? 'fas fa-check' : ''}`}
-            />
+              className="is-vcentered"
+              data-cy={todo.completed === true ? 'iconCompleted' : ''}
+            >
+              {todo.completed && <i className="fas fa-check" />}
+            </td>
             <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">{todo.title}</p>
+              <p
+                className={
+                  todo.completed === true
+                    ? 'has-text-success'
+                    : 'has-text-danger'
+                }
+              >
+                {todo.title}
+              </p>
             </td>
             <td className="has-text-right is-vcentered">
               <button

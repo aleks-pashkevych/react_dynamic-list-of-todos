@@ -16,7 +16,7 @@ export const TodoFilter: React.FC<Props> = ({ input, toFiler }) => {
             data-cy="statusSelect"
             onChange={event => {
               setStatus(event.target.value);
-              toFiler(element, status);
+              toFiler(element, event.target.value);
             }}
           >
             <option value="all">All</option>
@@ -49,7 +49,10 @@ export const TodoFilter: React.FC<Props> = ({ input, toFiler }) => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => toFiler(status, '')}
+              onClick={() => {
+                setElement('');
+                toFiler('', status);
+              }}
             />
           ) : (
             ''
