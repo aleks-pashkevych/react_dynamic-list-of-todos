@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -7,8 +7,67 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { Todo } from './types/Todo';
+
+import { getTodos } from './api';
 
 export const App: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
+  const [todoItem, setTodoItem] = useState({
+    userId: 1,
+    id: 1,
+    title: 'delectus aut autem',
+    completed: false,
+  });
+  const [isTodosLoading, setTodosIsLoading] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    getTodos()
+      .then(todosFromServer => {
+        setTodos(todosFromServer);
+        setFilteredTodos(todosFromServer);
+      })
+      .finally(() => setTodosIsLoading(false));
+  }, []);
+
+  const showTheModal = (todo: Todo) => {
+    setShowModal(true);
+    setTodoItem(todo);
+
+    return todo;
+  };
+
+  const hideTheModal = () => {
+    setShowModal(false);
+  };
+
+  const stopLoading = () => {
+    setTodosIsLoading(false);
+  };
+
+  const toFiler = (val: string, status: string = 'all') => {
+    const initialTodos = [...todos];
+
+    setInputValue(val);
+
+    const initialFilter = initialTodos.filter(el => el.title.includes(val));
+
+    if (status === 'all') {
+      setFilteredTodos(initialFilter);
+    }
+
+    if (status === 'completed') {
+      setFilteredTodos(initialFilter.filter(el => el.completed === true));
+    }
+
+    if (status === 'active') {
+      setFilteredTodos(initialFilter.filter(el => el.completed === false));
+    }
+  };
+
   return (
     <>
       <div className="section">
@@ -17,18 +76,31 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter toFiler={toFiler} input={inputValue} />
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              <Loader isLoading={isTodosLoading} />
+              <TodoList showModal={showTheModal} todos={filteredTodos} />
             </div>
           </div>
         </div>
       </div>
-
-      <TodoModal />
+      {/*
+      {showModal === true && isLoading === false ? (
+        <Loader isLoading={isLoading} />
+      ) : (
+        ''
+      )} */}
+      {showModal === true ? (
+        <TodoModal
+          hideModal={hideTheModal}
+          todo={todoItem}
+          stopLoading={stopLoading}
+        />
+      ) : (
+        ''
+      )}
     </>
   );
 };
