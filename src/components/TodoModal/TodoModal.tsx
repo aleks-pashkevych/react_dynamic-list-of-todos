@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
@@ -18,11 +18,13 @@ export const TodoModal: React.FC<Props> = ({ hideModal, todo }) => {
   });
   const [isUserLoading, setIsUserLoading] = useState(true);
 
-  getUser(todo.userId)
-    .then(response => {
-      setUser(response);
-    })
-    .finally(() => setIsUserLoading(false));
+  useEffect(() => {
+    getUser(todo.userId)
+      .then(response => {
+        setUser(response);
+      })
+      .finally(() => setIsUserLoading(false));
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
