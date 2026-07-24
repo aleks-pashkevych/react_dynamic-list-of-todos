@@ -4,10 +4,10 @@ import classNames from 'classnames';
 
 type Props = {
   todos: Todo[];
-  showModal: (todo: Todo) => Todo;
+  onTodoSelect: (todo: Todo) => Todo;
 };
 
-export const TodoList: React.FC<Props> = ({ showModal, todos }) => (
+export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>
@@ -49,7 +49,7 @@ export const TodoList: React.FC<Props> = ({ showModal, todos }) => (
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => showModal(todo)}
+                onClick={() => onTodoSelect(todo)}
               >
                 <span className="icon">
                   <i className="far fa-eye" />

@@ -77,7 +77,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               <Loader isLoading={isTodosLoading} />
-              <TodoList showModal={showTheModal} todos={filteredTodos} />
+              <TodoList onTodoSelect={showTheModal} todos={filteredTodos} />
             </div>
           </div>
         </div>
