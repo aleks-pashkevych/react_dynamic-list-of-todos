@@ -43,11 +43,9 @@ export const App: React.FC = () => {
   };
 
   const toFiler = (val: string, status: string = 'all') => {
-    const initialTodos = [...todos];
-
     setInputValue(val);
 
-    const initialFilter = initialTodos.filter(el => el.title.includes(val));
+    const initialFilter = todos.filter(el => el.title.includes(val));
 
     if (status === 'all') {
       setFilteredTodos(initialFilter);
@@ -62,6 +60,11 @@ export const App: React.FC = () => {
     }
   };
 
+  const clearSearch = (status = 'all') => {
+    setInputValue('');
+    toFiler('', status);
+  };
+
   return (
     <>
       <div className="section">
@@ -70,7 +73,11 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter toFiler={toFiler} input={inputValue} />
+              <TodoFilter
+                toFiler={toFiler}
+                input={inputValue}
+                clearSearch={clearSearch}
+              />
             </div>
 
             <div className="block">

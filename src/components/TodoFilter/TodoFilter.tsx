@@ -2,9 +2,14 @@ import { useState } from 'react';
 type Props = {
   input?: string;
   toFiler: (str: string, status?: string) => void;
+  clearSearch: (status?: string) => void;
 };
 
-export const TodoFilter: React.FC<Props> = ({ input, toFiler }) => {
+export const TodoFilter: React.FC<Props> = ({
+  input,
+  toFiler,
+  clearSearch,
+}) => {
   const [status, setStatus] = useState('all');
   const [element, setElement] = useState('');
 
@@ -52,6 +57,7 @@ export const TodoFilter: React.FC<Props> = ({ input, toFiler }) => {
               onClick={() => {
                 setElement('');
                 toFiler('', status);
+                clearSearch(status);
               }}
             />
           ) : (
