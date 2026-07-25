@@ -36,8 +36,6 @@ export const App: React.FC = () => {
   const showTheModal = (todo: Todo) => {
     setShowModal(true);
     setTodoItem(todo);
-
-    return todo;
   };
 
   const hideTheModal = () => {

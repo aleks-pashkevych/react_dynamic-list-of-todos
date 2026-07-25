@@ -51,7 +51,6 @@ export const TodoFilter: React.FC<Props> = ({ input, toFiler }) => {
               className="delete"
               onClick={() => {
                 setElement('');
-                toFiler('');
                 toFiler('', status);
               }}
             />

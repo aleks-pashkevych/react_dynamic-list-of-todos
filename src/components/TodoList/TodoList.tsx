@@ -1,10 +1,9 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
-import classNames from 'classnames';
 
 type Props = {
   todos: Todo[];
-  onTodoSelect: (todo: Todo) => Todo;
+  onTodoSelect: (todo: Todo) => void;
 };
 
 export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => (
@@ -31,7 +30,7 @@ export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => (
               className="is-vcentered"
               data-cy={todo.completed === true ? 'iconCompleted' : ''}
             >
-              <i className={classNames('fas', todo.completed && 'fa-check')} />
+              {todo.completed && <i className="fas fa-check" />}
             </td>
             <td className="is-vcentered is-expanded">
               <p
