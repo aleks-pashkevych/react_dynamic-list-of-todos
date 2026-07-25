@@ -4,15 +4,13 @@ import { Todo } from '../../types/Todo';
 type Props = {
   todos: Todo[];
   onTodoSelect: (todo: Todo) => void;
-  visited: number[];
-  setVisited: (el: number) => void;
+  selectedTodoId: number | null;
 };
 
 export const TodoList: React.FC<Props> = ({
-  onTodoSelect,
   todos,
-  visited,
-  setVisited,
+  onTodoSelect,
+  selectedTodoId,
 }) => {
   return (
     <table className="table is-narrow is-fullwidth">
@@ -58,13 +56,10 @@ export const TodoList: React.FC<Props> = ({
                   type="button"
                   onClick={() => {
                     onTodoSelect(todo);
-                    if (!visited.includes(todo.id)) {
-                      setVisited(todo.id);
-                    }
                   }}
                 >
                   <span className="icon">
-                    {visited.includes(todo.id) ? (
+                    {todo.id === selectedTodoId ? (
                       <i className="far fa-eye-slash" />
                     ) : (
                       <i className="far fa-eye" />

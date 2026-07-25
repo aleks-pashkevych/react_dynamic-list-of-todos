@@ -12,65 +12,33 @@ import { Todo } from './types/Todo';
 import { getTodos } from './api';
 
 export const App: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
-  const [todoItem, setTodoItem] = useState({
-    userId: 1,
-    id: 1,
-    title: 'delectus aut autem',
-    completed: false,
-  });
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isTodosLoading, setTodosIsLoading] = useState(true);
-  const [inputValue, setInputValue] = useState('');
-  const [visited, setVisited] = useState<number[]>([]);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('all');
 
   useEffect(() => {
     getTodos()
-      .then(todosFromServer => {
-        setTodos(todosFromServer);
-        setFilteredTodos(todosFromServer);
-      })
+      .then(setTodos)
       .finally(() => setTodosIsLoading(false));
   }, []);
 
-  const showTheModal = (todo: Todo) => {
-    setShowModal(true);
-    setTodoItem(todo);
-  };
-
-  const hideTheModal = () => {
-    setShowModal(false);
-  };
-
-  const toFiler = (val: string, status: string = 'all') => {
-    setInputValue(val);
-
-    const initialFilter = todos.filter(el =>
-      el.title.includes(val.toLowerCase()),
-    );
-
-    if (status === 'all') {
-      setFilteredTodos(initialFilter);
-    }
-
-    if (status === 'completed') {
-      setFilteredTodos(initialFilter.filter(el => el.completed === true));
+  const visibleTodos = todos.filter(todo => {
+    if (!todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+      return false;
     }
 
     if (status === 'active') {
-      setFilteredTodos(initialFilter.filter(el => el.completed === false));
+      return !todo.completed;
     }
-  };
 
-  const clearSearch = (status = 'all') => {
-    setInputValue('');
-    toFiler('', status);
-  };
+    if (status === 'completed') {
+      return todo.completed;
+    }
 
-  const setVisitedModal = (el: number) => {
-    setVisited([...visited, el]);
-  };
+    return true;
+  });
 
   return (
     <>
@@ -81,26 +49,29 @@ export const App: React.FC = () => {
 
             <div className="block">
               <TodoFilter
-                toFiler={toFiler}
-                input={inputValue}
-                clearSearch={clearSearch}
+                query={query}
+                status={status}
+                onQueryChange={setQuery}
+                onStatusChange={setStatus}
               />
             </div>
 
             <div className="block">
               <Loader isLoading={isTodosLoading} />
               <TodoList
-                onTodoSelect={showTheModal}
-                todos={filteredTodos}
-                visited={visited}
-                setVisited={setVisitedModal}
+                todos={visibleTodos}
+                selectedTodoId={selectedTodo?.id ?? null}
+                onTodoSelect={setSelectedTodo}
               />
             </div>
           </div>
         </div>
       </div>
-      {showModal === true && (
-        <TodoModal hideModal={hideTheModal} todo={todoItem} />
+      {selectedTodo && (
+        <TodoModal
+          hideModal={() => setSelectedTodo(null)}
+          todo={selectedTodo}
+        />
       )}
     </>
   );

@@ -1,27 +1,25 @@
-import { useState } from 'react';
 type Props = {
-  input?: string;
-  toFiler: (str: string, status?: string) => void;
-  clearSearch: (status?: string) => void;
+  query: string;
+  status: string;
+  onQueryChange: (query: string) => void;
+  onStatusChange: (status: string) => void;
 };
 
 export const TodoFilter: React.FC<Props> = ({
-  input,
-  toFiler,
-  clearSearch,
+  query,
+  status,
+  onQueryChange,
+  onStatusChange,
 }) => {
-  const [status, setStatus] = useState('all');
-  const [element, setElement] = useState('');
-
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
+            value={status}
             onChange={event => {
-              setStatus(event.target.value);
-              toFiler(element, event.target.value);
+              onStatusChange(event.target.value);
             }}
           >
             <option value="all">All</option>
@@ -37,12 +35,9 @@ export const TodoFilter: React.FC<Props> = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={String(input)}
+          value={query}
           onChange={event => {
-            const el = event.target.value.toLowerCase();
-
-            setElement(el);
-            toFiler(event.target.value, status);
+            onQueryChange(event.target.value);
           }}
         />
         <span className="icon is-left">
@@ -51,18 +46,15 @@ export const TodoFilter: React.FC<Props> = ({
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {String(input).length > 0 ? (
+          {query.length > 0 && (
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
               onClick={() => {
-                // setElement('');
-                clearSearch(status);
+                onQueryChange('');
               }}
             />
-          ) : (
-            ''
           )}
         </span>
       </p>
