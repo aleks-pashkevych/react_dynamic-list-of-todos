@@ -10,12 +10,7 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ hideModal, todo }) => {
-  const [user, setUser] = useState<User>({
-    id: 1,
-    name: 'Leanne Graham',
-    email: 'Sincere@april.biz',
-    phone: '1-770-736-8031 x56442',
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
 
   useEffect(() => {
@@ -65,7 +60,7 @@ export const TodoModal: React.FC<Props> = ({ hideModal, todo }) => {
 
               {' by '}
 
-              <a href={`mailto:${user.email}`}>{user.name}</a>
+              {user && <a href={`mailto:${user.email}`}>{user.name}`</a>}
             </p>
           </div>
         </div>
