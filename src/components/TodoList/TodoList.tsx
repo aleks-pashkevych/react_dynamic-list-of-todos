@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Todo } from '../../types/Todo';
 
 type Props = {
   todos: Todo[];
   onTodoSelect: (todo: Todo) => void;
 };
+const visited: number[] = [];
 
 export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
-  const [visited, setVisited] = useState<number[]>([]);
-
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -54,7 +53,7 @@ export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
                   onClick={() => {
                     onTodoSelect(todo);
                     if (!visited.includes(todo.id)) {
-                      setVisited([...visited, todo.id]);
+                      visited.push(todo.id);
                     }
                   }}
                 >
