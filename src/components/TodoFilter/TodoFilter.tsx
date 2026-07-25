@@ -57,7 +57,7 @@ export const TodoFilter: React.FC<Props> = ({
               type="button"
               className="delete"
               onClick={() => {
-                setElement('');
+                // setElement('');
                 clearSearch(status);
               }}
             />
