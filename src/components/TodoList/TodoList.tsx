@@ -4,10 +4,16 @@ import { Todo } from '../../types/Todo';
 type Props = {
   todos: Todo[];
   onTodoSelect: (todo: Todo) => void;
+  visited: number[];
+  setVisited: (el: number) => void;
 };
-const visited: number[] = [];
 
-export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
+export const TodoList: React.FC<Props> = ({
+  onTodoSelect,
+  todos,
+  visited,
+  setVisited,
+}) => {
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -53,7 +59,7 @@ export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
                   onClick={() => {
                     onTodoSelect(todo);
                     if (!visited.includes(todo.id)) {
-                      visited.push(todo.id);
+                      setVisited(todo.id);
                     }
                   }}
                 >

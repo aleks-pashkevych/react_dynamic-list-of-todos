@@ -23,6 +23,7 @@ export const App: React.FC = () => {
   });
   const [isTodosLoading, setTodosIsLoading] = useState(true);
   const [inputValue, setInputValue] = useState('');
+  const [visited, setVisited] = useState<number[]>([]);
 
   useEffect(() => {
     getTodos()
@@ -67,6 +68,10 @@ export const App: React.FC = () => {
     toFiler('', status);
   };
 
+  const setVisitedModal = (el: number) => {
+    setVisited([...visited, el]);
+  };
+
   return (
     <>
       <div className="section">
@@ -84,7 +89,12 @@ export const App: React.FC = () => {
 
             <div className="block">
               <Loader isLoading={isTodosLoading} />
-              <TodoList onTodoSelect={showTheModal} todos={filteredTodos} />
+              <TodoList
+                onTodoSelect={showTheModal}
+                todos={filteredTodos}
+                visited={visited}
+                setVisited={setVisitedModal}
+              />
             </div>
           </div>
         </div>
