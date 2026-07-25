@@ -45,7 +45,9 @@ export const App: React.FC = () => {
   const toFiler = (val: string, status: string = 'all') => {
     setInputValue(val);
 
-    const initialFilter = todos.filter(el => el.title.includes(val));
+    const initialFilter = todos.filter(el =>
+      el.title.includes(val.toLowerCase()),
+    );
 
     if (status === 'all') {
       setFilteredTodos(initialFilter);
@@ -87,16 +89,8 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {/*
-      {showModal === true && isLoading === false ? (
-        <Loader isLoading={isLoading} />
-      ) : (
-        ''
-      )} */}
-      {showModal === true ? (
+      {showModal === true && (
         <TodoModal hideModal={hideTheModal} todo={todoItem} />
-      ) : (
-        ''
       )}
     </>
   );

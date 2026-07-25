@@ -39,7 +39,9 @@ export const TodoFilter: React.FC<Props> = ({
           placeholder="Search..."
           value={String(input)}
           onChange={event => {
-            setElement(event.target.value);
+            const el = event.target.value.toLowerCase();
+
+            setElement(el);
             toFiler(event.target.value, status);
           }}
         />
@@ -56,7 +58,6 @@ export const TodoFilter: React.FC<Props> = ({
               className="delete"
               onClick={() => {
                 setElement('');
-                toFiler('', status);
                 clearSearch(status);
               }}
             />

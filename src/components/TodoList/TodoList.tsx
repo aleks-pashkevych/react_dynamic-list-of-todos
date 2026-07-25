@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
-  const [clickedId, setClickedId] = useState(0);
+  const [visited, setVisited] = useState<number[]>([]);
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -53,13 +53,17 @@ export const TodoList: React.FC<Props> = ({ onTodoSelect, todos }) => {
                   type="button"
                   onClick={() => {
                     onTodoSelect(todo);
-                    setClickedId(todo.id);
+                    if (!visited.includes(todo.id)) {
+                      setVisited([...visited, todo.id]);
+                    }
                   }}
                 >
                   <span className="icon">
-                    <i
-                      className={`far ${clickedId !== todo.id ? 'fa-eye' : 'fa-eye-slash'}`}
-                    />
+                    {visited.includes(todo.id) ? (
+                      <i className="far fa-eye-slash" />
+                    ) : (
+                      <i className="far fa-eye" />
+                    )}
                   </span>
                 </button>
               </td>
